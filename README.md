@@ -1,0 +1,20 @@
+# cs231notbook
+some convolution and mathematic deduction in the progression of doing assignments
+这个运算可以通过链式法则来推导。假设我们有一个卷积层的输入 x，滤波器 w，以及输出特征图的上游梯度 dout。我们需要计算滤波器的梯度 dw。下面是推导过程：
+
+首先，我们知道卷积层的前向传播计算可以表示为：
+`out[n, f, j, i] = sum(x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW] * w[f])`
+其中，n 表示样本索引，f 表示滤波器索引，j, i 表示输出特征图的空间位置。
+
+我们的目标是计算滤波器的梯度 dw。根据链式法则，我们需要计算损失函数关于滤波器的梯度。假设损失函数为 L，那么有：
+`dL/dw = sum(dL/dout[n, f, j, i] * dout[n, f, j, i]/dw)`
+
+对于第 f 个滤波器的梯度，我们可以将其表示为：
+`dw[f] = sum(dL/dout[n, f, j, i] * dout[n, f, j, i]/dw)`
+
+现在我们来计算 `dout[n, f, j, i]/dw`。可以观察到，在卷积操作中，滤波器 w[f] 与输入切片` x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW]` 是通过点乘操作进行的。因此，我们可以得到：
+`dout[n, f, j, i]/dw = x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW]`
+
+最后，我们将 `dL/dout[n, f, j, i]` 乘以 `x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW]` 得到 `dw[f]` 的相应部分，然后在所有样本和位置的梯度上求和，即可得到完整的滤波器梯度。
+
+综上所述，`dw[f] += x_pad[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW] * dout[n, f, j, i]` 表示了将上游梯度 dout 与输入 x_pad 相应部分进行乘积运算，并累加到滤波器梯度 dw[f] 上的操作。
