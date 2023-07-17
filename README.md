@@ -28,14 +28,14 @@ some convolution and mathematic deduction in the progression of doing assignment
 
 接下来，我们将 dout 的梯度传播到 x 中对应位置的最大值。具体操作如下：
 
-`python`
-`dx = np.zeros_like(x)`
-`N, C, H, W = x.shape`
+python
+dx = np.zeros_like(x)
+N, C, H, W = x.shape
 
-`for n in range(N):`
-    `for c in range(C):`
-        `for h in range(H):`
-            `for w in range(W):`
+for n in range(N):
+    for c in range(C):
+        for h in range(H):
+            for w in range(W):
                 # 获取当前位置的最大值的索引
                 `idx = max_idx[n, c, h, w]`
                 # 将上游梯度传递给最大值的位置
