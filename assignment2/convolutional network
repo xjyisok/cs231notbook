@@ -1,5 +1,5 @@
 卷积层反向传播的梯度推导：
-
+====
 这个运算可以通过链式法则来推导。假设我们有一个卷积层的输入 x，滤波器 w，以及输出特征图的上游梯度 dout。我们需要计算滤波器的梯度 dw。下面是推导过程：
 首先，我们知道卷积层的前向传播计算可以表示为：
 out[n, f, j, i] = sum(x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW] * w[f])
@@ -15,5 +15,6 @@ dw[f] = sum(dL/dout[n, f, j, i] * dout[n, f, j, i]/dw)
 dout[n, f, j, i]/dw = x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW]
 
 最后，我们将 dL/dout[n, f, j, i] 乘以 x[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW] 得到 dw[f] 的相应部分，然后在所有样本和位置的梯度上求和，即可得到完整的滤波器梯度。
-
 综上所述，dw[f] += x_pad[n, :, j * stride:j * stride + HH, i * stride:i * stride + WW] * dout[n, f, j, i] 表示了将上游梯度 dout 与输入 x_pad 相应部分进行乘积运算，并累加到滤波器梯度 dw[f] 上的操作。
+
+最大池化反向传播推导：
