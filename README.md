@@ -28,18 +28,18 @@ some convolution and mathematic deduction in the progression of doing assignment
 
 接下来，我们将 dout 的梯度传播到 x 中对应位置的最大值。具体操作如下：
 
-python
+```python
 dx = np.zeros_like(x)
 N, C, H, W = x.shape
 
-for n in range(N):\<br>
-    for c in range(C):\{br>
-        for h in range(H):\<br>
-            for w in range(W):\<br>
-                # 获取当前位置的最大值的索引\<br>
-                `idx = max_idx[n, c, h, w]'\<br>
-                # 将上游梯度传递给最大值的位置\<br>
-                dx[n, c, h, w] = dout[n, c, h, w] * (idx == x[n, c, h, w])`\<br>
+for n in range(N):<br>
+    for c in range(C):<br>
+        for h in range(H):<br>
+            for w in range(W):<br>
+                # 获取当前位置的最大值的索引<br>
+                `idx = max_idx[n, c, h, w]'<br>
+                # 将上游梯度传递给最大值的位置<br>
+                dx[n, c, h, w] = dout[n, c, h, w] * (idx == x[n, c, h, w])`<br>
 上述代码中，我们遍历输入 x 的每个位置 (n, c, h, w)。我们使用 max_idx 中相应位置的索引来检索 x 中的最大值位置。然后，我们将上游梯度 dout 乘以一个条件 (idx == `x[n, c, h, w])`，这个条件是指只有在 x 中的元素与最大值相等时才传递梯度，否则为零。
 
 最后，通过以上操作，我们可以计算出输入 x 的梯度 dx。
